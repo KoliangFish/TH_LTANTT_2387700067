@@ -1,2 +1,2 @@
-# Thong tin nhay cam
-password = "123456"
+# Da loai bo mat khau de tuan thu an toan
+print("Secure code")
