@@ -21,6 +21,8 @@ Xây dựng hệ thống ghi nhật ký an toàn (**SecureLogger**) tích hợp 
 ```text
 Lab3/
 ├── Readme.md                       # Tài liệu hướng dẫn và giải thích tính năng
+├── images/
+│   └── postman_result.png          # Ảnh chụp màn hình kết quả kiểm thử trên Postman
 └── secure_logger_lab/
     ├── app.py                      # Flask API endpoint /validate
     ├── requirements.txt            # Thư viện Flask
@@ -47,7 +49,7 @@ python app.py
 - **Body (JSON)**:
 ```json
 {
-  "email": "phuoc@example.com",
+  "email": "username@example.com",
   "url": "https://secure.com",
   "filename": "report.pdf",
   "sql": "' OR 1=1 --",
@@ -66,9 +68,15 @@ python app.py
 }
 ```
 
+### Hình ảnh minh chứng kết quả kiểm thử trên Postman:
+![Kết quả kiểm thử trên Postman](images/postman_result.png)
+
+---
+
+### Kiểm tra File Log
 - **Kiểm tra file `secure.log`**:
 ```json
-{"timestamp": "...", "level": "INFO", "message": "Validation check performed", "data": "{'email': '<email_masked>', 'url': 'https://secure.com', 'filename': 'report.pdf', 'sql': \"' OR 1=1 --\", 'html': '<script>alert(1)</script>'}", "results": "{'email': True, 'url': True, 'filename': True, 'sql': '1=1', 'html': '&lt;script&gt;alert(&quot;1&quot;)&lt;/script&gt;'}"}
+{"timestamp": "2026-09-23T09:02:14.281475Z", "level": "INFO", "message": "Validation check performed", "data": "{'email': '<email_masked>', 'filename': 'report.pdf', 'html': '<script>alert(1)</script>', 'sql': \"' OR 1=1 --\", 'url': 'https://secure.com'}", "results": "{'email': True, 'url': True, 'filename': True, 'sql': '1=1', 'html': '&lt;script&gt;alert(1)&lt;/script&gt;'}"}
 ```
 Thông tin email nhạy cảm đã tự động được che giấu thành `<email_masked>`.
 

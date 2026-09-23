@@ -1,2 +1,2 @@
-# Thong tin nhay cam da duoc go bo
-print("Secure code")
+# Thong tin nhay cam
+password = "123456"

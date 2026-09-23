@@ -190,3 +190,7 @@ Khởi động máy chủ phát triển:
 python app.py
 ```
 Truy cập vào trình duyệt web tại địa chỉ: `http://127.0.0.1:5000` để thử nghiệm các tính năng trên giao diện đồ họa.
+
+### Hình ảnh kiểm tra thực tế trên giao diện web:
+![Kết quả kiểm tra giao diện](images/ui_test_result.png)
+
