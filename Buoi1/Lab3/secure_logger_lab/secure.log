@@ -1,0 +1,1 @@
+{"timestamp": "2026-09-23T09:02:14.281475Z", "level": "INFO", "message": "Validation check performed", "data": "{'email': '<email_masked>', 'filename': 'report.pdf', 'html': 'test html', 'sql': 'test sql', 'url': 'https://secure.com'}", "results": "{'email': True, 'url': True, 'filename': True, 'sql': 'test sql', 'html': 'test html'}"}

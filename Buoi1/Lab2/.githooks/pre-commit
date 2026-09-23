@@ -2,7 +2,7 @@
 import os, re, subprocess, sys, stat, platform
 from datetime import datetime
 
-LOG_FILE = "gitsecure.log"
+LOG_FILE = os.path.join(os.path.dirname(__file__), "..", "gitsecure.log")
 SENSITIVE_PATTERNS = [
     r"apikey\s*=\s*['\"][A-Za-z0-9_\-]{16,}['\"]",
     r"secret\s*=\s*['\"][A-Za-z0-9_\-]{8,}['\"]",
@@ -12,8 +12,11 @@ SENSITIVE_PATTERNS = [
 ]
 
 def log(msg):
-    with open(LOG_FILE, "a") as f:
-        f.write(f"[{datetime.now()}] {msg}\n")
+    try:
+        with open(LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(f"[{datetime.now()}] {msg}\n")
+    except Exception:
+        pass
 
 def scan_sensitive(file_path):
     try:
