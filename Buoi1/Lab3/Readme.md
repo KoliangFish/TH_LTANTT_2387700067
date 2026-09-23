@@ -1,84 +1,67 @@
 # BÁO CÁO THỰC HÀNH LAB 3: GHI NHẬT KÝ ƯU TIÊN BẢO MẬT (SECURE LOGGER)
 
-## 1. Mục tiêu
-Xây dựng hệ thống ghi nhật ký an toàn (**SecureLogger**) tích hợp vào API Flask và thư viện **SecureValidator** từ Lab 1 nhằm phục vụ giám sát, kiểm toán và phát hiện bất thường mà không làm rò rỉ dữ liệu nhạy cảm.
-
-## 2. Tính năng chính
-1. **Đa cấp độ Log (Multi-level Logging)**:
-   - Hỗ trợ các mức log tiêu chuẩn: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`.
-2. **Che giấu thông tin định danh cá nhân (PII Masking)**:
-   - Tự động nhận diện và ẩn giấu Email (`<email_masked>`) và các chuỗi Token/API Key/Password (`<token_masked>`) trong thông điệp và payload.
-3. **Định dạng cấu trúc JSON (Structured JSON Logging)**:
-   - Sử dụng `JSONFormatter` tùy biến để lưu log dưới định dạng JSON có cấu trúc (`timestamp`, `level`, `message`, `data`, `results`).
-4. **Quản lý luân phiên và nén Log (Log Rotation & Compression)**:
-   - Kế thừa `RotatingFileHandler` với kích thước tối đa `1MB` và lưu tối đa 2 bản sao lưu dự phòng.
-   - Tự động nén các file log cũ sang định dạng `.gz` thông qua lớp `GZipRotator`.
-5. **Chống thay đổi trái phép (Tamper Detection)**:
-   - Mỗi dòng log ghi ra sẽ được tính toán mã băm mật mã **SHA-256** và lưu vết vào file chữ ký `secure.log.sig`.
-   - Giúp kiểm toán viên đối chiếu và phát hiện nếu file nhật ký `secure.log` bị chỉnh sửa hoặc can thiệp trái phép.
-
-## 3. Cấu trúc thư mục Lab 3
-```text
-Lab3/
-├── Readme.md                       # Tài liệu hướng dẫn và giải thích tính năng
-├── images/
-│   └── postman_result.png          # Ảnh chụp màn hình kết quả kiểm thử trên Postman
-└── secure_logger_lab/
-    ├── app.py                      # Flask API endpoint /validate
-    ├── requirements.txt            # Thư viện Flask
-    ├── securevalidator/            # Thư viện kiểm tra dữ liệu từ Lab 1
-    │   ├── __init__.py
-    │   └── core.py
-    └── securelogger/               # Module ghi log bảo mật
-        ├── __init__.py
-        └── logger.py
-```
-
-## 4. Hướng dẫn chạy và kiểm thử
-
-### Khởi động server
-Tại thư mục `Buoi1/Lab3/secure_logger_lab`:
-```powershell
-python app.py
-```
-
-### Kiểm thử qua API (Postman / cURL)
-- **Method**: `POST`
-- **URL**: `http://localhost:5000/validate`
-- **Headers**: `Content-Type: application/json`
-- **Body (JSON)**:
-```json
-{
-  "email": "username@example.com",
-  "url": "https://secure.com",
-  "filename": "report.pdf",
-  "sql": "' OR 1=1 --",
-  "html": "<script>alert(1)</script>"
-}
-```
-
-- **Kết quả trả về (JSON)**:
-```json
-{
-  "email": true,
-  "filename": true,
-  "html": "&lt;script&gt;alert(1)&lt;/script&gt;",
-  "sql": "1=1",
-  "url": true
-}
-```
-
-### Hình ảnh minh chứng kết quả kiểm thử trên Postman:
-![Kết quả kiểm thử trên Postman](images/postman_result.png)
+- **Sinh viên**: Đặng Hải Tiến - MSSV: 2387700067
+- **Môn học**: Thực hành Lập trình An ninh Thông tin (TH_LTANTT)
 
 ---
 
-### Kiểm tra File Log
-- **Kiểm tra file `secure.log`**:
-```json
-{"timestamp": "2026-09-23T09:02:14.281475Z", "level": "INFO", "message": "Validation check performed", "data": "{'email': '<email_masked>', 'filename': 'report.pdf', 'html': '<script>alert(1)</script>', 'sql': \"' OR 1=1 --\", 'url': 'https://secure.com'}", "results": "{'email': True, 'url': True, 'filename': True, 'sql': '1=1', 'html': '&lt;script&gt;alert(1)&lt;/script&gt;'}"}
-```
-Thông tin email nhạy cảm đã tự động được che giấu thành `<email_masked>`.
+## 1. Mục tiêu
+Xây dựng hệ thống **SecureLogger** tích hợp vào API Flask để ghi nhật ký an toàn: tự động che giấu thông tin định danh cá nhân (PII), định dạng JSON có cấu trúc, xoay vòng nén log và tạo chữ ký băm SHA-256 chống chỉnh sửa (Tamper Detection).
 
-- **Kiểm tra file `secure.log.sig`**:
-Chứa mã băm SHA-256 tương ứng của dòng log để phát hiện thay đổi trái phép.
+---
+
+## 2. Tính năng chính
+1. **Che giấu PII (PII Masking)**: Tự động phát hiện và ẩn Email thành `<email_masked>`, Token/Password thành `<token_masked>`.
+2. **Cấu trúc JSON**: Xuất log có cấu trúc gồm: `timestamp`, `level`, `message`, `data`, `results`.
+3. **Xoay vòng & Nén log (Log Rotation)**: Tự động luân phiên khi file đạt 1MB, lưu tối đa 2 bản backup và nén thành `.gz`.
+4. **Chống thay đổi trái phép (Tamper Detection)**: Mỗi dòng log được băm **SHA-256** và ghi ngay vào `secure.log.sig` để kiểm toán toàn vẹn.
+
+---
+
+## 3. Cấu trúc thư mục
+```text
+Lab3/
+├── Readme.md                       # Báo cáo tóm tắt & hình ảnh minh chứng
+├── images/                         # Thư mục ảnh chụp kết quả kiểm thử
+└── secure_logger_lab/
+    ├── app.py                      # Flask API endpoint /validate
+    ├── requirements.txt            # Thư viện phụ thuộc (Flask)
+    ├── secure.log                  # File log JSON (đã che PII)
+    ├── secure.log.sig              # File chữ ký băm SHA-256
+    ├── securevalidator/            # Thư viện validate dữ liệu từ Lab 1
+    └── securelogger/               # Module SecureLogger (logger.py, __init__.py)
+```
+
+---
+
+## 4. Kết quả thực nghiệm (Test Cases)
+
+### 📸 Case 1: Gửi Request kiểm tra dữ liệu qua Postman
+- **Thao tác**: Gửi `POST` đến `http://localhost:5000/validate` với Body JSON chứa thông tin email, URL, filename, SQL và HTML script.
+- **Kết quả**: API xử lý an toàn và trả về phản hồi `200 OK`:
+![Case 1: Gửi request thành công trên Postman](images/case1_postman_result.png)
+
+---
+
+### 📸 Case 2: Kiểm tra che giấu PII trong `secure.log`
+- **Kết quả**: Dữ liệu email nhạy cảm đã được hệ thống tự động ẩn thành `<email_masked>` trước khi lưu vào file log:
+![Case 2: Email bị che giấu trong file secure.log](images/case2_postman_result.png)
+
+---
+
+### 📸 Case 3: Xử lý ngoại lệ khi gửi JSON sai định dạng
+- **Thao tác**: Gửi body không đúng cú pháp JSON.
+- **Kết quả**: Server bắt lỗi, trả về `400 Bad Request` (`Invalid JSON format`) và tự động ghi nhận vào log ở cấp độ `WARNING`:
+![Case 3: Postman nhận lỗi 400 Bad Request](images/case3_postman_result.png)
+![Case 3: File secure.log ghi nhận log cảnh báo WARNING](images/case3_log_result.png)
+
+---
+
+### 📸 Case 4: Kiểm tra chữ ký băm SHA-256 chống chỉnh sửa (`secure.log.sig`)
+- **Kết quả**: Mỗi dòng log đều được tính mã băm SHA-256 và lưu riêng biệt tại `secure.log.sig`. Nếu log bị sửa đổi trái phép, chữ ký băm sẽ không khớp giúp phát hiện ngay hành vi gian lận:
+![Case 4: Chữ ký băm SHA-256 trong file secure.log.sig](images/case4_hashed_log.png)
+
+---
+
+## 5. Kết luận
+Hệ thống SecureLogger hoạt động ổn định, đáp ứng đầy đủ yêu cầu nghiệp vụ: bảo vệ quyền riêng tư người dùng (không lộ PII trong log) và đảm bảo tính toàn vẹn phục vụ công tác điều tra số (Forensics/Audit).
