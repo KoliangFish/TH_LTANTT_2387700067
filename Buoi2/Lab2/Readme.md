@@ -124,29 +124,7 @@ Lần lượt thao tác qua 5 chức năng chính:
 
 ---
 
-### 3.5. Case 4: Bảo mật khóa mật mã với GitSecure Pre-commit Hook & `.gitignore`
-- Khóa riêng tư (`*.pem`, thư mục `certs/`) là tài sản tối mật, tuyệt đối **không được đẩy lên Git repository**.
-- Cấu hình bổ sung vào `.gitignore`:
-  ```gitignore
-  certs/
-  *.pem
-  ```
-- Tiến hành commit mã nguồn:
-  ```powershell
-  git add .
-  git commit -m "[add] mini-ca"
-  git push origin main
-  ```
-- **GitSecure Pre-commit Hook** quét qua toàn bộ thay đổi và cho phép thông qua an toàn:
-  ```text
-  GitSecure: All checks passed.
-  ```
-
-![Git Commit & Push](images/case4_git_commit.png)
-
----
-
 ## 4. KẾT LUẬN
 - Dự án `mini-ca` đã mô phỏng hoàn chỉnh và chính xác một hệ thống thẩm quyền chứng chỉ số (PKI) phân cấp 2 tầng theo chuẩn quốc tế X.509v3.
 - Nắm vững quy trình sinh khóa RSA, cấu hình các extension bảo mật (`BasicConstraints`), ký số chứng chỉ, xác thực chuỗi tin cậy và quản lý vòng đời thu hồi qua CRL/OCSP.
-- Đảm bảo tuân thủ nguyên tắc an ninh phần mềm: loại bỏ khóa riêng mật mã khỏi Git bằng pre-commit hook và `.gitignore`.
+- Đảm bảo tuân thủ nguyên tắc an ninh thông tin: phân cấp thẩm quyền tạo dựng chuỗi tin cậy và kiểm soát chặt chẽ trạng thái thu hồi chứng chỉ số.
