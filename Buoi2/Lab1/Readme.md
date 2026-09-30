@@ -104,7 +104,7 @@ tests\test_aes_utils.py .                                                [ 16%]
 tests\test_hash_utils.py ..                                              [ 50%]
 tests\test_rsa_utils.py ...                                              [100%]
 
-============================== 6 passed in 1.31s ==============================
+============================== 6 passed in 0.71s ==============================
 ```
 ✅ **6/6 test cases đạt kết quả PASSED 100%.**
 
@@ -150,3 +150,16 @@ Sử dụng Postman để kiểm tra:
      - `file`: chọn file `data.txt.enc`
      - `password`: dán chuỗi `key` Base64 nhận được từ bước mã hóa.
    - Nhận về JSON: `{"output": "...\\data.txt.dec"}`.
+
+---
+
+### 3.6. Kiểm thử tương thích với GitSecure Pre-commit Hook (từ Buổi 1 - Lab 2)
+- Khi lập trình viên vô tình cài cứng mật khẩu thực tế trong tệp kiểm thử `test_hash_utils.py`, hệ thống **GitSecure Pre-commit Hook** (đã xây dựng ở Buổi 1) lập tức phát hiện và chặn lại:
+  ```text
+  COMMIT BLOCKED by GitSecure:
+   - Sensitive info found in crypto-toolkit/tests/test_hash_utils.py: pattern password\s*=\s*['\"][^'\"]{4,}['\"]
+  ```
+- Sau khi xử lý an toàn bằng cách loại bỏ mật khẩu hardcoded (`password = ""`), GitSecure cho phép thông qua:
+  ```text
+  GitSecure: All checks passed.
+  ```
