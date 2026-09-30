@@ -9,3 +9,5 @@ postman/
 upload/
 *.enc
 *.dec
+certs/
+*.pem
