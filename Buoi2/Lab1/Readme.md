@@ -108,6 +108,8 @@ tests\test_rsa_utils.py ...                                              [100%]
 ```
 ✅ **6/6 test cases đạt kết quả PASSED 100%.**
 
+![Unit Test Pytest](images/case1_pytest.png)
+
 ---
 
 ### 3.3. Kiểm thử qua Giao diện dòng lệnh (CLI)
@@ -116,11 +118,16 @@ tests\test_rsa_utils.py ...                                              [100%]
    securecrypto-cli --encrypt .\files\data.txt --password pass123
    ```
    *Kết quả*: Hệ thống tạo file mã hóa `.\files\data.txt.enc` và in ra chuỗi khóa Base64.
+
+   ![CLI Encrypt](images/case2_cli_encrypt.png)
+
 2. **Giải mã file**:
    ```powershell
    securecrypto-cli --decrypt .\files\data.txt.enc --password [khoa_base64_o_buoc_tren]
    ```
    *Kết quả*: Hệ thống giải mã ra file `.\files\data.txt.dec` có nội dung chuẩn xác: `HUTECH University`.
+
+   ![CLI Decrypt](images/case3_cli_decrypt.png)
 
 ---
 
@@ -129,8 +136,11 @@ Khởi chạy ứng dụng Tkinter:
 ```powershell
 python securecrypto/app_gui.py
 ```
-- Nhập mật khẩu > Bấm **Encrypt** > Chọn file `data.txt` -> Nhận chuỗi Key.
-- Dán Key vào ô mật khẩu > Bấm **Decrypt** > Chọn file `data.txt.enc` -> Nhận đường dẫn file đã giải mã `.dec`.
+- Nhập mật khẩu > Bấm **Encrypt** > Chọn file `data.txt` -> Hệ thống tự sinh chuỗi Key, tự động copy Key vào Clipboard và điền vào ô nhập.
+- Bấm **Decrypt** > Chọn file `data.txt.enc` -> Hệ thống giải mã thành công và trả về đường dẫn file `.dec`.
+> **Ghi chú Debug**: Bản GUI gốc bị crash ngầm do thiếu xử lý ngoại lệ khi sai khóa/sai file và ô nhập bị ẩn (`show="*"`) gây dán nhầm chuỗi. Đã hoàn thiện bổ sung `try...except`, hiển thị thông báo popup và hỗ trợ auto-fill Key.
+
+![GUI Decrypt Result](images/case4_gui.png)
 
 ---
 
@@ -145,11 +155,16 @@ Sử dụng Postman để kiểm tra:
      - `file`: chọn file `data.txt`
      - `password`: `pass123`
    - Nhận về JSON: `{"key": "..."}` và file đã mã hóa trong `securecrypto/upload/`.
+
+   ![API Encrypt](images/case5_api_encrypt.png)
+
 2. **Endpoint Giải mã (`POST http://127.0.0.1:5000/decrypt`)**:
    - Body > `form-data`:
      - `file`: chọn file `data.txt.enc`
      - `password`: dán chuỗi `key` Base64 nhận được từ bước mã hóa.
    - Nhận về JSON: `{"output": "...\\data.txt.dec"}`.
+
+   ![API Decrypt](images/case5_api_decrypt.png)
 
 ---
 
