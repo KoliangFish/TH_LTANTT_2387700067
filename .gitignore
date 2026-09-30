@@ -5,3 +5,7 @@ __pycache__/
 gitsecure.log
 .postman/
 postman/
+*.egg-info/
+upload/
+*.enc
+*.dec

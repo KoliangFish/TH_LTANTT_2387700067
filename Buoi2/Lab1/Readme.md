@@ -24,7 +24,7 @@ Mã hóa là quá trình chuyển đổi dữ liệu gốc (Plaintext) thành b�
 
 | Đặc điểm | PyCA Cryptography | PyCryptodome |
 | :--- | :--- | :--- |
-| **Định hướng** | Hiện đại, dễ dùng, an toàn mặc định (an toàn theo chuẩn OpenSSL). | Hướng tới cấp thấp (low-level), thay thế thư viện PyCrypto cũ. |
+| **Định hướng** | Hiện đại, dễ dùng, an toàn mặc định (tuân thủ OpenSSL). | Hướng tới cấp thấp (low-level), thay thế thư viện PyCrypto cũ. |
 | **Mức độ trừu tượng** | Cung cấp Recipe cấp cao (`fernet`) và tầng Hazmat khi cần can thiệp sâu. | Can thiệp trực tiếp vào từng block cipher, padding, nonce, mode. |
 | **Ứng dụng tối ưu** | Phù hợp cho dự án sản phẩm thực tế, tích hợp framework (Flask, Django). | Phù hợp nghiên cứu, học thuật, tùy biến sâu và demo thuật toán. |
 
@@ -60,11 +60,93 @@ KDF giúp chuyển đổi mật khẩu người dùng (thường ngắn, dễ đ
 
 ---
 
-## 2. MỤC TIÊU THỰC HÀNH: THƯ VIỆN CRYPTOTOOLKIT
-Trong phần thực hành tiếp theo, chúng ta sẽ xây dựng thư viện `CryptoToolkit` tích hợp các chức năng mật mã cốt lõi:
-1. `encrypt_file_aes(filepath, password)`: Mã hóa tệp tin bằng thuật toán **AES-256-GCM** (kèm xác thực toàn vẹn dữ liệu).
-2. `decrypt_file_aes(encrypted_file, password)`: Giải mã tệp tin đã mã hóa.
-3. `generate_rsa_keypair(key_size)`: Tạo cặp khóa bất đối xứng RSA (Public/Private Key).
-4. `sign_data_rsa(data, private_key)`: Tạo chữ ký số trên dữ liệu bằng RSA.
-5. `verify_signature_rsa(data, signature, public_key)`: Kiểm tra tính hợp lệ của chữ ký số.
-6. `hash_password_secure(password)`: Băm mật khẩu an toàn chuẩn **Argon2**.
+## 2. CẤU TRÚC DỰ ÁN THỰC HÀNH: CRYPTO-TOOLKIT
+```text
+Buoi2/Lab1/crypto-toolkit/
+├── files/
+│   └── data.txt                    # Dữ liệu kiểm thử ("HUTECH University")
+├── securecrypto/                   # Thư viện mật mã chính
+│   ├── __init__.py                 # Khởi tạo package (__version__ = "0.1.0")
+│   ├── aes_utils.py                # Mã hóa/giải mã AES-256-GCM & PBKDF2HMAC
+│   ├── hash_utils.py               # Băm mật khẩu an toàn bằng Argon2
+│   ├── rsa_utils.py                # Cặp khóa RSA, ký số & xác thực chữ ký
+│   ├── cli.py                      # Giao diện dòng lệnh CLI (securecrypto-cli)
+│   ├── api.py                      # REST API Flask (/encrypt, /decrypt)
+│   └── app_gui.py                  # Giao diện đồ họa Tkinter (GUI)
+├── tests/                          # Bộ kiểm thử tự động với Pytest
+│   ├── test_aes_utils.py           # Test mã hóa/giải mã AES
+│   ├── test_hash_utils.py          # Test băm và xác thực Argon2
+│   └── test_rsa_utils.py           # Test sinh khóa, ký và xác thực RSA
+├── requirements.txt                # Thư viện phụ thuộc
+└── setup.py                        # Cấu hình cài đặt package & CLI entry-point
+```
+
+---
+
+## 3. HƯỚNG DẪN CÀI ĐẶT & CHẠY KIỂM THỬ
+
+### 3.1. Cài đặt package ở chế độ Editable
+Di chuyển vào thư mục `Buoi2/Lab1/crypto-toolkit` và cài đặt:
+```powershell
+pip install -e .
+```
+
+### 3.2. Chạy bộ kiểm thử tự động (Unit Tests)
+Chạy lệnh kiểm thử bằng `pytest`:
+```powershell
+pytest tests/
+```
+**Kết quả kiểm thử:**
+```text
+collected 6 items
+
+tests\test_aes_utils.py .                                                [ 16%]
+tests\test_hash_utils.py ..                                              [ 50%]
+tests\test_rsa_utils.py ...                                              [100%]
+
+============================== 6 passed in 1.31s ==============================
+```
+✅ **6/6 test cases đạt kết quả PASSED 100%.**
+
+---
+
+### 3.3. Kiểm thử qua Giao diện dòng lệnh (CLI)
+1. **Mã hóa file**:
+   ```powershell
+   securecrypto-cli --encrypt .\files\data.txt --password pass123
+   ```
+   *Kết quả*: Hệ thống tạo file mã hóa `.\files\data.txt.enc` và in ra chuỗi khóa Base64.
+2. **Giải mã file**:
+   ```powershell
+   securecrypto-cli --decrypt .\files\data.txt.enc --password [khoa_base64_o_buoc_tren]
+   ```
+   *Kết quả*: Hệ thống giải mã ra file `.\files\data.txt.dec` có nội dung chuẩn xác: `HUTECH University`.
+
+---
+
+### 3.4. Kiểm thử qua Giao diện đồ họa (GUI)
+Khởi chạy ứng dụng Tkinter:
+```powershell
+python securecrypto/app_gui.py
+```
+- Nhập mật khẩu > Bấm **Encrypt** > Chọn file `data.txt` -> Nhận chuỗi Key.
+- Dán Key vào ô mật khẩu > Bấm **Decrypt** > Chọn file `data.txt.enc` -> Nhận đường dẫn file đã giải mã `.dec`.
+
+---
+
+### 3.5. Kiểm thử qua Web REST API (Flask)
+Khởi chạy máy chủ API:
+```powershell
+python securecrypto/api.py
+```
+Sử dụng Postman để kiểm tra:
+1. **Endpoint Mã hóa (`POST http://127.0.0.1:5000/encrypt`)**:
+   - Body > `form-data`:
+     - `file`: chọn file `data.txt`
+     - `password`: `pass123`
+   - Nhận về JSON: `{"key": "..."}` và file đã mã hóa trong `securecrypto/upload/`.
+2. **Endpoint Giải mã (`POST http://127.0.0.1:5000/decrypt`)**:
+   - Body > `form-data`:
+     - `file`: chọn file `data.txt.enc`
+     - `password`: dán chuỗi `key` Base64 nhận được từ bước mã hóa.
+   - Nhận về JSON: `{"output": "...\\data.txt.dec"}`.
