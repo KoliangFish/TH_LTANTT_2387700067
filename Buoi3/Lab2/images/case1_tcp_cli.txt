@@ -1,23 +1,24 @@
-python cli.py --target 127.0.0.1 --ports 60899,60900,60902 --mode scan
+python cli.py --target 127.0.0.1 --ports 64493,64494,64496 --mode scan
 {
   "target": "127.0.0.1",
   "mode": "scan",
   "rate_limit": 10,
   "scan": [
     {
-      "port": 60899,
+      "port": 64493,
       "protocol": "tcp",
       "state": "open"
     },
     {
-      "port": 60900,
+      "port": 64494,
       "protocol": "tcp",
       "state": "open"
     },
     {
-      "port": 60902,
+      "port": 64496,
       "protocol": "tcp",
       "state": "closed"
     }
   ]
 }
+

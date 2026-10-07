@@ -3,6 +3,7 @@ import click
 from modules.runner import run_scan, MODES
 from modules.filter_utils import entries
 from modules.email_sender import send_email
+from modules.report_formatter import format_report
 
 
 @click.command()
@@ -24,7 +25,7 @@ def cli(target, ports, mode, rate_limit, protocol, whitelist, blacklist, use_nma
         text = json.dumps(result, indent=2, ensure_ascii=False)
         click.echo(text)
         if email:
-            click.echo(send_email(email, 'Kết quả quét từ NetRecon', text))
+            click.echo(send_email(email, 'Kết quả quét từ NetRecon', format_report(result)))
     except (ValueError, OSError) as exc:
         raise click.ClickException(str(exc)) from exc
 

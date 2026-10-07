@@ -88,7 +88,7 @@ def main():
         assert inbox.messages
         mail = BytesParser(policy=policy.default).parsebytes(inbox.messages[-1])
         assert mail['To'] == 'student@example.test'
-        assert 'scan' in mail.get_body().get_content()
+        assert '--- SCAN ---' in mail.get_body().get_content()
         save_case(lab, 'case5_web_email', 'Case 5 · Flask routes and real local SMTP delivery',
                   'GET / -> HTTP 200\nPOST /scan (all + email) -> HTTP 200\nPOST /scan invalid ports -> HTTP 400\n'
                   f'SMTP inbox: 127.0.0.1:{inbox.server_address[1]}\nTo: {mail["To"]}\nSubject: {mail["Subject"]}\n'

@@ -4,7 +4,7 @@
   "rate_limit": 10,
   "scan": [
     {
-      "port": 63996,
+      "port": 50439,
       "protocol": "udp",
       "state": "open"
     }

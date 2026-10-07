@@ -5,7 +5,7 @@
 
 ## Báo cáo thực hành từng bước
 
-Phần này ghi lại lần thực hành của sinh viên với **14 ảnh chụp thực tế**, bao phủ các bước chuẩn bị dịch vụ, TCP/UDP, nhận dạng dịch vụ, policy, web, SMTP local và audit log. Các ảnh `case...` ở phần bên dưới bổ sung kết quả kiểm tra tự động trước đó.
+Phần này ghi lại lần thực hành của sinh viên với **16 ảnh chụp thực tế**, bao phủ các bước chuẩn bị dịch vụ, TCP/UDP, nhận dạng dịch vụ, policy, web, SMTP local và audit log. Các ảnh `case...` ở phần bên dưới bổ sung kết quả kiểm tra tự động trước đó.
 
 ### Bước 1 — Chuẩn bị và phân chia terminal
 
@@ -265,7 +265,7 @@ Trong Explorer của VS Code, mở `netrecon/demo-inbox.eml`. Xem `To`, `Subject
 python -c "from email import policy; from email.parser import BytesParser; from pathlib import Path; m=BytesParser(policy=policy.default).parsebytes(Path('demo-inbox.eml').read_bytes()); print('To:',m['To']); print('Subject:',m['Subject']); print(m.get_body().get_content())"
 ```
 
-App kết nối SMTP ở localhost, gửi email qua socket thật; hộp thư demo nhận và lưu vào file. Địa chỉ `.test` chỉ dùng trong demo, không gửi tới hộp thư Gmail. Gmail dùng SMTP SSL và mật khẩu ứng dụng riêng, xem mục bên dưới nếu muốn làm thêm.
+App kết nối SMTP ở localhost, gửi email qua socket thật; hộp thư demo nhận và lưu vào file. Địa chỉ `.test` chỉ dùng trong demo, không gửi tới hộp thư Gmail. Gmail dùng SMTP SSL và mật khẩu ứng dụng riêng, xem mục Gmail bên dưới để hoàn thành yêu cầu nhận email thật trong giáo trình.
 
 **Kết quả thực hành:** Web báo email được hộp thư local chấp nhận. Email đã lưu có From netrecon@localhost, To student@example.test, tiêu đề “Kết quả quét từ NetRecon” và nội dung kết quả scan. Đây là SMTP local, không phải Gmail.
 
@@ -317,7 +317,7 @@ Nhấn **Win+Shift+S**, chọn vùng cần chụp, mở thông báo Snipping Too
 | 8 | `manual8_email.png` | Email đã nhận ở hộp thư local |
 | 9 | `manual9_log_tests_2.png` | Audit log và 11 test đạt |
 
-Đã chèn đủ 14 ảnh thực hành có trong thư mục `images` vào các bước tương ứng. Các file có hậu tố `_2`, `_3` ghi lại các phần đầu ra dài. Phần Nmap/SYN và Gmail ở các mục bên dưới là các bước mở rộng cần công cụ/tài khoản tương ứng.
+Đã chèn đủ 16 ảnh thực hành có trong thư mục `images`, gồm 14 ảnh các bước 1–9 và 2 ảnh gửi/nhận Gmail thật. Các file có hậu tố `_2`, `_3` ghi lại các phần đầu ra dài. Phần Gmail bên dưới đã có minh chứng nhận email thật theo giáo trình; SMTP local là bước kiểm tra trước. Phần Nmap/SYN cần công cụ tương ứng.
 
 ### Xử lý lỗi khi thực hành
 
@@ -460,19 +460,51 @@ python cli.py --target 127.0.0.1 --ports 8000 --mode all --email student@example
 
 ![Case 5 — kiểm tra Flask và SMTP thật tại localhost](images/case5_web_email.png)
 
-### Email bằng Gmail (bạn cấu hình tài khoản riêng)
+### Nhận email thật tại Gmail — hoàn thành yêu cầu giáo trình
 
-Theo [hướng dẫn Google](https://support.google.com/accounts/answer/185833), app password cần tài khoản bật xác minh hai bước; khả năng tạo còn phụ thuộc loại/chính sách tài khoản. Mở [App passwords](https://myaccount.google.com/apppasswords) nếu tài khoản hỗ trợ, tạo mật khẩu ứng dụng và chỉ lưu trên máy trong `.env`:
+Ảnh SMTP local chứng minh chức năng gửi/nhận trên máy. Để đáp ứng yêu cầu kiểm tra hộp thư thật, cần gửi kết quả đến **danghaitien25@gmail.com** và chụp email nhận được. Đã kiểm chứng thành công bằng ảnh gửi trên web và email trong hộp thư Gmail.
+
+**1. Tạo mật khẩu ứng dụng:** đăng nhập tài khoản Gmail dùng để gửi. Theo [hướng dẫn Google](https://support.google.com/accounts/answer/185833), cần bật xác minh hai bước; vào [App passwords](https://myaccount.google.com/apppasswords), tạo mục tên NetRecon. Nếu tùy chọn không xuất hiện, kiểm tra chính sách tài khoản theo hướng dẫn Google. Mật khẩu này khác mật khẩu đăng nhập Gmail.
+
+**2. Sửa file `netrecon/.env` trên máy:** có thể dùng chính tài khoản nhận để gửi cho bản thân:
 
 ```dotenv
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=465
 SMTP_MODE=ssl
-SMTP_USER=your-address@gmail.com
-SMTP_PASS=your-app-password
+SMTP_USER=danghaitien25@gmail.com
+SMTP_PASS=DIEN_MAT_KHAU_UNG_DUNG_CUA_BAN
+NETRECON_WHITELIST=127.0.0.0/8
+NETRECON_BLACKLIST=
 ```
 
-Khởi động lại app, nhập địa chỉ nhận của bạn và Scan. Thất bại email vẫn hiển thị kết quả scan và thông báo lỗi. **Gửi Gmail chưa được kiểm tra bằng tài khoản thật**; không có ảnh hộp thư Gmail giả lập trong báo cáo. Không sử dụng địa chỉ/mật khẩu xuất hiện trong ảnh giáo trình.
+Thay placeholder SMTP_PASS bằng mật khẩu ứng dụng thực, nhập liền không có các khoảng trắng phân nhóm. Chỉ lưu trong `.env`; không gửi mật khẩu vào chat, chụp nó hoặc chép vào README. `.env` đã được Git bỏ qua. Nếu tài khoản gửi khác, SMTP_USER và mật khẩu phải thuộc cùng tài khoản gửi; người nhận vẫn là danghaitien25@gmail.com.
+
+**3. Khởi động lại:** dừng `app.py` bằng Ctrl+C rồi chạy lại `python app.py`. Giữ `demo_targets.py` chạy. Có thể dừng `demo_mail.py` vì lượt này sử dụng SMTP Gmail.
+
+**4. Gửi từ web:** mở http://127.0.0.1:5000, target 127.0.0.1, ports 8000,8001,8022, mode All; nhập **danghaitien25@gmail.com** vào ô Email rồi bấm Scan. Kỳ vọng thông báo **Email sent**. Có thể thay web bằng CLI:
+
+```powershell
+python cli.py --target 127.0.0.1 --ports 8000,8001,8022 --mode all --email danghaitien25@gmail.com
+```
+
+**5. Kiểm tra hộp thư:** mở Gmail của danghaitien25@gmail.com, tìm tiêu đề **Kết quả quét từ NetRecon**; kiểm tra cả Spam nếu chưa thấy. Mở email và đối chiếu target, trạng thái cổng, banner/service với kết quả web. Thông báo SMTP gửi thành công cần được bổ sung bằng ảnh email đã nhận.
+
+**6. Chụp thêm ảnh:** lưu vào `Buoi3/Lab2/images`:
+
+| File | Nội dung cần thấy |
+| --- | --- |
+| `manual10_gmail_sent.png` | Trang kết quả web có Email sent |
+| `manual10_gmail_received.png` | Gmail mở email, người nhận/tiêu đề và phần kết quả scan |
+| `manual10_gmail_received_2.png` | Phần service/banner còn lại nếu email dài |
+
+Không chụp mật khẩu ứng dụng. Sau khi có ảnh, bổ sung vào README và cập nhật bài trên GitHub. Lỗi xác thực SMTP thường cần kiểm tra đúng app password, đúng tài khoản và đã restart app. Nếu timeout, kiểm tra kết nối mạng/cổng 465. Email Gmail đã được kiểm chứng thành công trong lần thực hành này.
+
+**Kết quả thực hành Gmail:** Web báo **Email sent**. Hộp thư danghaitien25@gmail.com nhận thư “Kết quả quét từ NetRecon” từ chính tài khoản này, target 127.0.0.1, mode all. Cổng 8000/8022 mở, 8001 đóng; email hiển thị SCAN, SERVICE và BANNER theo bố cục báo cáo. Module `report_formatter.py` dùng chung cho email từ CLI và web.
+
+![Web báo gửi email Gmail thành công](images/manual10_gmail_sent.png)
+
+![Gmail nhận báo cáo NetRecon với trạng thái cổng, dịch vụ và banner](images/manual10_gmail_received.png)
 
 ## 8. Log — Case 6
 

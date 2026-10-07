@@ -1,41 +1,41 @@
 GET / -> HTTP 200
 POST /scan (all + email) -> HTTP 200
 POST /scan invalid ports -> HTTP 400
-SMTP inbox: 127.0.0.1:60901
+SMTP inbox: 127.0.0.1:64495
 To: student@example.test
 Subject: Kết quả quét từ NetRecon
 SMTP DATA accepted and parsed successfully
 Local inbox only; no message sent to Gmail
-Email body size: 4657 characters
+Email body size: 3812 characters
 First 30 lines of received email body:
 
-{
-  "target": "127.0.0.1",
-  "mode": "all",
-  "rate_limit": 10,
-  "scan": [
-    {
-      "port": 60899,
-      "protocol": "tcp",
-      "state": "open"
-    },
-    {
-      "port": 60900,
-      "protocol": "tcp",
-      "state": "open"
-    },
-    {
-      "port": 60902,
-      "protocol": "tcp",
-      "state": "closed"
-    }
-  ],
-  "banner": {
-    "60899": "HTTP/1.0 200 OK\r\nServer: NetReconLab/1.0 \r\nDate: Wed, 07 Oct 2026 06:36:26 GMT",
-    "60900": "SSH-2.0-NetReconLab_1.0"
-  },
-  "service": {
-    "60899": "HTTP / NetReconLab/1.0",
-    "60900": "SSH-2.0-NetReconLab_1.0"
-  },
-  "vuln": {
+Kết quả NetRecon:
+Target: 127.0.0.1
+Mode: all
+
+--- SCAN ---
+PORT         STATE
+64493/tcp    open
+64494/tcp    open
+64496/tcp    closed
+
+--- SERVICE ---
+64493: HTTP / NetReconLab/1.0
+64494: SSH-2.0-NetReconLab_1.0
+
+--- BANNER ---
+64493: HTTP/1.0 200 OK
+Server: NetReconLab/1.0 
+Date: Wed, 07 Oct 2026 09:09:03 GMT
+64494: SSH-2.0-NetReconLab_1.0
+
+--- VULN ---
+Port 64493 [review]: HTTP plaintext observed; use HTTPS for sensitive data
+Port 64493 [info]: Server software banner disclosed
+Indicators only. CVE requires product, version and configuration evidence.
+
+--- MAP ---
+IP                 MAC                  TYPE
+192.168.89.254     00-50-56-fc-61-d5    dynamic
+192.168.89.255     ff-ff-ff-ff-ff-ff    static
+224.0.0.22         01-00-5e-00-00-16    static

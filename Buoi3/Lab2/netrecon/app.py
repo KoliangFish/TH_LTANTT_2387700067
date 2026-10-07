@@ -1,10 +1,10 @@
-import json
 import os
 from pathlib import Path
 from dotenv import load_dotenv
 from flask import Flask, render_template, request
 from modules.runner import run_scan
 from modules.email_sender import send_email
+from modules.report_formatter import format_report
 
 load_dotenv(Path(__file__).resolve().parent / '.env')
 app = Flask(__name__)
@@ -30,7 +30,7 @@ def scan():
     email = request.form.get('email', '').strip()
     if email:
         try:
-            email_status = send_email(email, 'Kết quả quét từ NetRecon', json.dumps(result, ensure_ascii=False, indent=2))
+            email_status = send_email(email, 'Kết quả quét từ NetRecon', format_report(result))
         except (ValueError, OSError) as exc:
             email_status = 'Email thất bại: ' + str(exc)
     return render_template('result.html', result=result, email_status=email_status)

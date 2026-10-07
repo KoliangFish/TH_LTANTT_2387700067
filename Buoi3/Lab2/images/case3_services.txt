@@ -4,38 +4,38 @@
   "rate_limit": 10,
   "scan": [
     {
-      "port": 60899,
+      "port": 64493,
       "protocol": "tcp",
       "state": "open"
     },
     {
-      "port": 60900,
+      "port": 64494,
       "protocol": "tcp",
       "state": "open"
     },
     {
-      "port": 60902,
+      "port": 64496,
       "protocol": "tcp",
       "state": "closed"
     }
   ],
   "banner": {
-    "60899": "HTTP/1.0 200 OK\r\nServer: NetReconLab/1.0 \r\nDate: Wed, 07 Oct 2026 06:36:23 GMT",
-    "60900": "SSH-2.0-NetReconLab_1.0"
+    "64493": "HTTP/1.0 200 OK\r\nServer: NetReconLab/1.0 \r\nDate: Wed, 07 Oct 2026 09:08:59 GMT",
+    "64494": "SSH-2.0-NetReconLab_1.0"
   },
   "service": {
-    "60899": "HTTP / NetReconLab/1.0",
-    "60900": "SSH-2.0-NetReconLab_1.0"
+    "64493": "HTTP / NetReconLab/1.0",
+    "64494": "SSH-2.0-NetReconLab_1.0"
   },
   "vuln": {
     "findings": [
       {
-        "port": 60899,
+        "port": 64493,
         "level": "review",
         "finding": "HTTP plaintext observed; use HTTPS for sensitive data"
       },
       {
-        "port": 60899,
+        "port": 64493,
         "level": "info",
         "finding": "Server software banner disclosed"
       }
@@ -61,7 +61,7 @@
       }
     ],
     "note": "Local ARP cache only; not a complete network topology",
-    "total_neighbors": 31,
+    "total_neighbors": 64,
     "display": "First 3 ARP entries shown; remaining entries omitted"
   }
 }

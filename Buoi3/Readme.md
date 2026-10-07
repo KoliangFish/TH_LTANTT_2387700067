@@ -51,7 +51,7 @@ Pop-Location
 - Lab1: 4 unit test và 6 nhóm case tích hợp TLS/E2EE/phòng chat.
 - Lab2: 11 unit test và 6 nhóm case tích hợp CLI/TCP/UDP/banner/policy/web/email/log.
 - Web: ảnh trang nhập, trang kết quả, lỗi nhập liệu; kiểm tra chiều rộng trên mobile.
-- Email: kiểm chứng SMTP cục bộ; chưa kiểm chứng gửi Gmail bằng tài khoản cá nhân.
+- Email: kiểm chứng SMTP cục bộ và gửi/nhận Gmail thật, có ảnh minh chứng trong README Lab2.
 - Nmap: có tích hợp `-sV`, `-sS`, `-sU`; máy hiện tại chưa có Nmap/Npcap nên chưa chạy tích hợp Nmap thật.
 
 Khóa/chứng chỉ, `.env` và log lúc chạy đã được loại khỏi Git bằng `Buoi3/.gitignore`. Không gửi `room_keys.json`, khóa riêng hay mật khẩu ứng dụng lên GitHub.
