@@ -1,0 +1,6 @@
+tampered ciphertext -> InvalidTag (rejected)
+wrong key -> InvalidTag (rejected)
+wrong room AAD -> InvalidTag (rejected)
+Server never receives room_keys.json or AES keys
+Server log contains metadata/ciphertext length, no chat plaintext
+PASS: AES-GCM integrity and server blindness

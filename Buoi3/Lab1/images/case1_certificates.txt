@@ -1,0 +1,6 @@
+certs\ca\ca.crt: CN=Buoi3 Lab CA
+certs\client\alice.crt: CN=alice
+certs\client\bob.crt: CN=bob
+certs\client\charlie.crt: CN=charlie
+certs\server\server.crt: CN=server
+Server SAN: <SubjectAlternativeName(<GeneralNames([<DNSName(value='localhost')>, <IPAddress(value=127.0.0.1)>])>)>

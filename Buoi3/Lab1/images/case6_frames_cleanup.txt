@@ -1,0 +1,4 @@
+Message 1: 12000 characters -> intact
+Message 2: second frame -> intact
+bob disconnected -> active clients = 2
+PASS: length-prefixed frames and cleanup

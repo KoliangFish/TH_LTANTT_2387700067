@@ -1,0 +1,18 @@
+2026-10-07 13:36:23,489 INFO VULN indicators=[{'port': 60899, 'level': 'review', 'finding': 'HTTP plaintext observed; use HTTPS for sensitive data'}, {'port': 60899, 'level': 'info ... [line truncated for image]
+2026-10-07 13:36:23,528 INFO MAP ARP neighbors=[{'ip': '192.168.89.254', 'mac': '00-50-56-fc-61-d5', 'type': 'dynamic'}, {'ip': '192.168.89.255', 'mac': 'ff-ff-ff-ff-ff-ff', 'type' ... [line truncated for image]
+2026-10-07 13:36:23,528 INFO END target=127.0.0.1
+2026-10-07 13:36:23,570 WARNING BLOCK target=127.0.0.1 resolved=127.0.0.1
+2026-10-07 13:36:23,570 WARNING BLOCK target=127.0.0.1 resolved=127.0.0.1
+2026-10-07 13:36:24,301 INFO ALLOW target=127.0.0.1 resolved=127.0.0.1
+2026-10-07 13:36:24,301 INFO START target=127.0.0.1 mode=all ports=[60899, 60900, 60902] rate=10 protocol=tcp
+2026-10-07 13:36:24,302 INFO PROBE target=127.0.0.1 port=60899 protocol=tcp state=open
+2026-10-07 13:36:24,403 INFO PROBE target=127.0.0.1 port=60900 protocol=tcp state=open
+2026-10-07 13:36:26,537 INFO PROBE target=127.0.0.1 port=60902 protocol=tcp state=closed
+2026-10-07 13:36:26,960 INFO BANNER target=127.0.0.1 port=60899 result='HTTP/1.0 200 OK\r\nServer: NetReconLab/1.0 \r\nDate: Wed, 07 Oct 2026 06:36:26 GMT'
+2026-10-07 13:36:26,975 INFO BANNER target=127.0.0.1 port=60900 result='SSH-2.0-NetReconLab_1.0'
+2026-10-07 13:36:26,975 INFO SERVICE port=60899 result='HTTP / NetReconLab/1.0'
+2026-10-07 13:36:26,975 INFO SERVICE port=60900 result='SSH-2.0-NetReconLab_1.0'
+2026-10-07 13:36:26,975 INFO VULN indicators=[{'port': 60899, 'level': 'review', 'finding': 'HTTP plaintext observed; use HTTPS for sensitive data'}, {'port': 60899, 'level': 'info ... [line truncated for image]
+2026-10-07 13:36:27,007 INFO MAP ARP neighbors=[{'ip': '192.168.89.254', 'mac': '00-50-56-fc-61-d5', 'type': 'dynamic'}, {'ip': '192.168.89.255', 'mac': 'ff-ff-ff-ff-ff-ff', 'type' ... [line truncated for image]
+2026-10-07 13:36:27,007 INFO END target=127.0.0.1
+2026-10-07 13:36:27,026 INFO EMAIL sent recipient=student@example.test host=127.0.0.1

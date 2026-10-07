@@ -1,0 +1,9 @@
+.venv/
+.env
+*.key
+room_keys.json
+certs/
+*.log
+.pytest_cache/
+__pycache__/
+demo-inbox.eml

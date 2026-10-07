@@ -1,0 +1,67 @@
+{
+  "target": "127.0.0.1",
+  "mode": "all",
+  "rate_limit": 10,
+  "scan": [
+    {
+      "port": 60899,
+      "protocol": "tcp",
+      "state": "open"
+    },
+    {
+      "port": 60900,
+      "protocol": "tcp",
+      "state": "open"
+    },
+    {
+      "port": 60902,
+      "protocol": "tcp",
+      "state": "closed"
+    }
+  ],
+  "banner": {
+    "60899": "HTTP/1.0 200 OK\r\nServer: NetReconLab/1.0 \r\nDate: Wed, 07 Oct 2026 06:36:23 GMT",
+    "60900": "SSH-2.0-NetReconLab_1.0"
+  },
+  "service": {
+    "60899": "HTTP / NetReconLab/1.0",
+    "60900": "SSH-2.0-NetReconLab_1.0"
+  },
+  "vuln": {
+    "findings": [
+      {
+        "port": 60899,
+        "level": "review",
+        "finding": "HTTP plaintext observed; use HTTPS for sensitive data"
+      },
+      {
+        "port": 60899,
+        "level": "info",
+        "finding": "Server software banner disclosed"
+      }
+    ],
+    "note": "Indicators only. CVE requires product, version and configuration evidence."
+  },
+  "map": {
+    "neighbors": [
+      {
+        "ip": "192.168.89.254",
+        "mac": "00-50-56-fc-61-d5",
+        "type": "dynamic"
+      },
+      {
+        "ip": "192.168.89.255",
+        "mac": "ff-ff-ff-ff-ff-ff",
+        "type": "static"
+      },
+      {
+        "ip": "224.0.0.22",
+        "mac": "01-00-5e-00-00-16",
+        "type": "static"
+      }
+    ],
+    "note": "Local ARP cache only; not a complete network topology",
+    "total_neighbors": 31,
+    "display": "First 3 ARP entries shown; remaining entries omitted"
+  }
+}

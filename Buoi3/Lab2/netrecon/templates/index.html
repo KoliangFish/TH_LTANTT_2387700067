@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}{% block content %}
+{% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+<section><h2>Thiết lập lượt quét</h2><p>Mặc định cho phép địa chỉ loopback. Thay đổi phạm vi trong .env cho mạng thực hành của bạn.</p>
+<form action="/scan" method="post">
+<label>Target IP / hostname<input name="target" value="127.0.0.1" required></label>
+<label>Cổng (danh sách hoặc khoảng)<input name="ports" value="8000,8001,8022" required></label>
+<label>Chế độ<select name="mode"><option value="all">All</option><option value="scan">Port Scan</option><option value="service">Service Detection</option><option value="banner">Banner Grabbing</option><option value="map">Network Map</option><option value="vuln">Configuration / Vulnerability Review</option></select></label>
+<label>Giao thức<select name="protocol"><option>tcp</option><option>udp</option></select></label>
+<label>Tốc độ (probe/giây)<input name="rate_limit" type="number" min="1" max="100" value="10" required></label>
+<label>Kỹ thuật<select name="technique"><option value="connect">TCP Connect / UDP probe</option><option value="syn">TCP SYN (Nmap, mode Scan)</option></select></label>
+<label class="check"><input type="checkbox" name="nmap"> Dùng Nmap đã cài đặt</label>
+<label>Email nhận kết quả (tùy chọn)<input name="email" type="email" placeholder="student@example.com"></label>
+<button type="submit">Scan</button></form></section>{% endblock %}

@@ -1,0 +1,7 @@
+{'blacklist': ['127.0.0.1']} -> Target blocked by whitelist/blacklist
+{'whitelist': ['192.0.2.0/24']} -> Target blocked by whitelist/blacklist
+ports='0' -> rejected
+ports='65536' -> rejected
+ports='80;whoami' -> rejected
+ports='1-65535' -> rejected
+4 probe slots at 5/second: elapsed 0.602s (expected >=0.6s)

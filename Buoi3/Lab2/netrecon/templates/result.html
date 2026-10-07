@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}{% block content %}<a href="/">← Lượt quét mới</a>
+<h2>Kết quả · {{ result.target }}</h2><p class="status">{{ email_status }}</p>
+{% for name, value in result.items() %}{% if name not in ['target', 'mode', 'rate_limit'] %}
+<section><h3>{{ name|upper }}</h3>
+{% if name == 'map' %}<p>{{ value.note }}</p>
+<table><thead><tr><th>IP</th><th>MAC</th><th>Type</th></tr></thead><tbody>
+{% for neighbor in value.neighbors %}<tr><td>{{ neighbor.ip }}</td><td>{{ neighbor.mac }}</td><td>{{ neighbor.type }}</td></tr>{% endfor %}
+</tbody></table>
+{% else %}<pre>{{ value|tojson(indent=2) }}</pre>{% endif %}</section>
+{% endif %}{% endfor %}{% endblock %}

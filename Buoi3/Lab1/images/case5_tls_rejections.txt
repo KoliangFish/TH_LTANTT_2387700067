@@ -1,0 +1,3 @@
+Wrong hostname -> Hostname mismatch, certificate is not valid for 'wrong.example'.
+Untrusted CA -> self-signed certificate in certificate chain
+Missing client certificate -> SSLError

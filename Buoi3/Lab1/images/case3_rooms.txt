@@ -1,0 +1,7 @@
+charlie joins study -> joined ACK
+alice -> general: general only
+bob receives; charlie waits 0.3s -> no message
+alice joins study -> joined ACK
+alice -> study: study only
+charlie receives: study only
+PASS: rooms route independently

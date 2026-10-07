@@ -1,0 +1,7 @@
+Connected: alice, bob, charlie
+TLS negotiated: TLSv1.3
+Alice sends: Xin chào Bob! Tin nhắn bảo mật từ Alice.
+Bob receives: Xin chào Bob! Tin nhắn bảo mật từ Alice.
+Charlie receives the same message
+Server relays ciphertext: gJnoygnXEEhcIMiGzJCCqHD8Z1QZddiuOu4bUDDmi/2txM4qDuhZ+iQ2ys2DcMc4ZkHKoE6j/YkNTmRtTpZNHTnvqLoKY2REEpv/Mqw=
+PASS: Unicode round-trip over real TLS sockets

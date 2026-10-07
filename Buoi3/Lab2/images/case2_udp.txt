@@ -1,0 +1,12 @@
+{
+  "target": "127.0.0.1",
+  "mode": "scan",
+  "rate_limit": 10,
+  "scan": [
+    {
+      "port": 63996,
+      "protocol": "udp",
+      "state": "open"
+    }
+  ]
+}
